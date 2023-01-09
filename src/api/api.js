@@ -1,45 +1,21 @@
 import ENV from '../../env'
-// import Fetch from '../helpers/fetch'
-// import Logger from '../helpers/logger'
 
 export const API = {
-    getAberturas() {
-        return this._get(ENV.GET_ABERTURAS);
-    },
-    getTerminaciones() {
-        return this._get(ENV.GET_TERMINACIONES);
-    },
-    getEquipamiento() {
-        return this._get(ENV.GET_EQUIPAMIENTO);
+    async getAberturas() {
+        const response = await fetch(ENV.API.GET_ABERTURAS)
+        const data = response.json()
+        return data
     },
 
-    _get(path) {
-        const method = 'GET';
-        // const headers = ENV.API.HEADERS(token);
-
-        let url = Object.keys(params)
-            .map(param => `${param}=${params[param]}`)
-            .join('&');
-        url = `${path}${url ? '?' : ''}${url}`;
-        Logger.log(`GET ${url}`);
-
-        return this._fetch(url, { method });
+    async getTerminaciones() {
+        const response = await fetch(ENV.API.GET_TERMINACIONES)
+        const data = response.json()
+        return data
     },
 
-    _fetch(path) {
-        // fetch(path)
-        //     .then(response => response.json())
-        //     .then(data => console.log(data));
-        //     const now = +new Date();
-        return fetch(path)
-            .then(res => res.json())
-            .then(res => {
-                Logger.log(`[${method}] end (took:' + (+${new Date() - now}) + 'ms)`);
-                return res;
-            })
-            .catch(e => {
-                // Logger.log(`ERROR: ${e}`);
-                return e;
-            });
-    },
+    async getEquipamiento() {
+        const response = await fetch(ENV.API.GET_EQUIPAMIENTO)
+        const data = response.json()
+        return data
+    }
 }

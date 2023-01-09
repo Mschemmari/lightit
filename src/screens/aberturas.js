@@ -1,12 +1,26 @@
-import * as React from 'react';
-import { Text, View } from 'react-native';
-
-
+import { React, useState, useEffect } from 'react';
+import { Text, View, Pressable } from 'react-native';
+import { API } from '../api/api'
 
 const Aberturas = () => {
+    const [items, setItems] = useState([])
+    useEffect(() => {
+        getItems()
+    }, [items]);
+
+    const getItems = async () => {
+        const data = await API.getAberturas()
+        const items = await data.map(items => items)
+        setItems(items)
+    }
     return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text>Aberturas!</Text>
+
+            {/* {items?.map(item => <Text>{item.name}</Text>)} */}
+            <Pressable onPress={getItems}>
+                {items?.map(item => <Text>{item.name}</Text>)}
+
+            </Pressable>
         </View>
     )
 }
