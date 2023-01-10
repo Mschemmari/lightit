@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Image } from 'react-native'
+import { Image, Button } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
@@ -21,6 +21,13 @@ const App = () => {
                 />
               );
             },
+            headerRight: () => (
+              <Button
+                onPress={() => alert('This is a button!')}
+                title="Info"
+                color="#fff"
+              />
+            ),
           }}
         />
         <Tab.Screen name="Equipamiento" component={Equipamiento}
@@ -33,6 +40,13 @@ const App = () => {
                 />
               );
             },
+            headerRight: () => (
+              <Button
+                onPress={() => alert('This is a button!')}
+                title="Info"
+                color="#fff"
+              />
+            ),
           }}
         />
         <Tab.Screen name="Terminaciones" component={Terminaciones}

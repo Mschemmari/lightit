@@ -1,28 +1,54 @@
-import { React, useState, useEffect } from 'react';
-import { Text, View, Pressable } from 'react-native';
+import { React, useState, useEffect, } from 'react';
+import { Text, View, FlatList, Button, StyleSheet, Image, ScrollView } from 'react-native';
 import { API } from '../api/api'
 
 const Equipamiento = () => {
     const [items, setItems] = useState([])
-    useEffect(() => {
-        getItems()
-    }, [items]);
+    const [categories, setCategories] = useState([])
+    const [showItems, setShowItems] = useState(false)
+    useEffect(() => { getItems(); }, []);
 
     const getItems = async () => {
         const data = await API.getEquipamiento()
-        const items = await data.map(items => items)
+        const items = [...data].map(items => items)
         setItems(items)
     }
+    const handlePress = (category) => {
+        setShowItems(true)
+        const cat = items.find(i => i.name === category)
+        setCategories(cat.items)
+    }
+
     return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
 
-            {/* {items?.map(item => <Text>{item.name}</Text>)} */}
-            <Pressable onPress={getItems}>
-                {items?.map(item => <Text>{item.name}</Text>)}
-
-            </Pressable>
+        <View style={styles.container}>
+            <FlatList
+                data={items}
+                renderItem={({ item }) => {
+                    return <Button onPress={() => handlePress(item.name)} title={item.name} />
+                }}
+                key={(_, i) => i}
+            />
+            <ScrollView >
+                {showItems && categories.map((item, i) => {
+                    return <View key={i}>
+                        <Text>{item.name}</Text>
+                        <Image
+                            style={{ width: 200, height: 200 }}
+                            source={{ uri: item.img }}
+                        />
+                    </View>
+                })}
+            </ScrollView>
         </View>
     )
 }
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        marginHorizontal: 16,
+    },
 
+});
 export default Equipamiento
