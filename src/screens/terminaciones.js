@@ -1,18 +1,24 @@
 import { React, useState, useEffect, } from 'react';
-import { Text, View, FlatList, Button, StyleSheet, Image, ScrollView } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+
+import ItemList from '../components/item-list'
+import Categories from '../components/categories'
+
 import { API } from '../api/api'
 
 const Terminaciones = () => {
     const [items, setItems] = useState([])
     const [categories, setCategories] = useState([])
     const [showItems, setShowItems] = useState(false)
-    useEffect(() => { getItems(); }, []);
+
+    useEffect(() => { getItems() }, []);
 
     const getItems = async () => {
         const data = await API.getTerminaciones()
         const items = [...data].map(items => items)
         setItems(items)
     }
+
     const handlePress = (category) => {
         setShowItems(true)
         const cat = items.find(i => i.name === category)
@@ -22,24 +28,14 @@ const Terminaciones = () => {
     return (
 
         <View style={styles.container}>
-            <FlatList
-                data={items}
-                renderItem={({ item }) => {
-                    return <Button onPress={() => handlePress(item.name)} title={item.name} />
-                }}
-                key={(_, i) => i}
+            <Categories
+                items={items}
+                handlePress={handlePress}
             />
-            <ScrollView >
-                {showItems && categories.map((item, i) => {
-                    return <View key={i}>
-                        <Text>{item.name}</Text>
-                        <Image
-                            style={{ width: 200, height: 200 }}
-                            source={{ uri: item.img }}
-                        />
-                    </View>
-                })}
-            </ScrollView>
+            <ItemList
+                categories={categories}
+                showItems={showItems}
+            />
         </View>
     )
 }
